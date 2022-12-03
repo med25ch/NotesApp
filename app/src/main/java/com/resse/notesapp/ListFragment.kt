@@ -22,7 +22,7 @@ class ListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener{
-            findNavController().navigate(R.id.addFragment)
+            findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
         // Set Menu
@@ -43,7 +43,7 @@ class ListFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Validate and handle the selected menu item
-
+                findNavController().navigate(R.id.addFragment)
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
