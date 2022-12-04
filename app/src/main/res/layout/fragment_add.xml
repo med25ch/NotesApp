@@ -43,11 +43,14 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/radio"
+            android:checkedButton="@id/radioLow"
             android:orientation="horizontal">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/radioHigh"
                 android:text="HIGH"
                 android:button="@color/transparent"
                 android:background="@drawable/radio_selector"
@@ -59,6 +62,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/radioMedium"
                 android:text="MEDIUM"
                 android:button="@color/transparent"
                 android:background="@drawable/radio_selector_medium"
@@ -69,6 +73,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/radioLow"
                 android:text="LOW"
                 android:button="@color/transparent"
                 android:background="@drawable/radio_selector_low"
