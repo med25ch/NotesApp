@@ -33,6 +33,8 @@ android {
 
 dependencies {
 
+    implementation 'androidx.room:room-common:2.4.3'
+    implementation 'androidx.room:room-ktx:2.4.3'
     def nav_version = "2.5.3"
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -54,6 +56,9 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
 
 
