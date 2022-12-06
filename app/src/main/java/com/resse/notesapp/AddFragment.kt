@@ -13,12 +13,18 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.ToDoViewModel
+import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
 
 
 class AddFragment : Fragment() {
+
+    private val mTodoViewModel: ToDoViewModel by viewModels {
+        ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +87,7 @@ class AddFragment : Fragment() {
                 mDescription
             )
             //insert data to db
-
+            mTodoViewModel.insert(newData)
             Toast.makeText(requireContext(),"${newData.title} added : ${newData.priority}",Toast.LENGTH_LONG).show()
 
         }else{
