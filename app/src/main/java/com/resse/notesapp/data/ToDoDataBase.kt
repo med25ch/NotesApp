@@ -3,6 +3,7 @@ package com.resse.notesapp.data
 import android.content.Context
 import androidx.room.*
 import com.resse.notesapp.data.models.ToDoData
+import kotlinx.coroutines.CoroutineScope
 
 @Database(entities = [ToDoData::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
