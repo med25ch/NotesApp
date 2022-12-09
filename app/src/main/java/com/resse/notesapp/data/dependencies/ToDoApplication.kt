@@ -1,9 +1,11 @@
 package com.resse.notesapp.data.dependencies
 
 import android.app.Application
+import com.resse.notesapp.BuildConfig
 import com.resse.notesapp.data.ToDoDataBase
 import com.resse.notesapp.data.repository.ToDoRepository
-import kotlinx.coroutines.CoroutineScope
+import timber.log.Timber
+
 
 class ToDoApplication : Application() {
 
@@ -11,4 +13,12 @@ class ToDoApplication : Application() {
     // rather than when the application starts
     val database by lazy { ToDoDataBase.getDatabase(this) }
     val repository by lazy { ToDoRepository(database.toDoDao()) }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+    }
 }
