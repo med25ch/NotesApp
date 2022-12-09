@@ -18,6 +18,7 @@ import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.ToDoViewModel
 import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
+import timber.log.Timber
 
 
 class AddFragment : Fragment() {
@@ -88,6 +89,7 @@ class AddFragment : Fragment() {
             )
             //insert data to db
             mTodoViewModel.insert(newData)
+            Timber.d("New Note inserted to Database ")
             Toast.makeText(requireContext(),"${newData.title} added : ${newData.priority}",Toast.LENGTH_LONG).show()
 
         }else{
