@@ -1,7 +1,6 @@
 package com.resse.notesapp
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import android.widget.EditText
 import android.widget.RadioButton
@@ -14,10 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.resse.notesapp.data.dependencies.ToDoApplication
-import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
+import com.resse.notesapp.data.viewModels.SharedViewModel
 import com.resse.notesapp.data.viewModels.ToDoViewModel
 import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
+import com.resse.notesapp.data.viewModels.SharedViewModelFactory
 import timber.log.Timber
 
 
@@ -25,6 +25,10 @@ class AddFragment : Fragment() {
 
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
+    }
+
+    private val mSharedViewModel : SharedViewModel by viewModels{
+        SharedViewModelFactory(activity?.application)
     }
 
     override fun onCreateView(
@@ -77,14 +81,14 @@ class AddFragment : Fragment() {
         val mPriority = radioButton.text.toString()
         val mDescription = view.findViewById<EditText>(R.id.note_description_ET).text.toString()
 
-        val validation = verifyDataFromUser(mTitle, mDescription)
+        val validation = mSharedViewModel.verifyDataFromUser(mTitle, mDescription)
 
         if(validation){
             // create data
             val newData = ToDoData(
                 id =0,
                 mTitle,
-                parsePriority(mPriority),
+                mSharedViewModel.parsePriority(mPriority),
                 mDescription
             )
             //insert data to db
@@ -93,22 +97,8 @@ class AddFragment : Fragment() {
             Toast.makeText(requireContext(),"${newData.title} added : ${newData.priority}",Toast.LENGTH_LONG).show()
 
         }else{
-
-        }
-    }
-
-    private fun verifyDataFromUser(mTitle: String, mDescription: String): Boolean {
-        return if (TextUtils.isEmpty(mTitle) || TextUtils.isEmpty(mDescription)) {
-            false
-        } else !(mTitle.isEmpty() || mDescription.isEmpty())
-    }
-
-    private fun parsePriority(priority: String) : Priority{
-        return when(priority){
-            "LOW" -> {Priority.LOW}
-            "MEDIUM" -> {Priority.MEDIUM}
-            "HIGH" -> {Priority.HIGH}
-            else -> {Priority.LOW}
+            // Put some message to inform user to fill all fields
+            Timber.d("Fields validation failed . NoteData not inserted to database")
         }
     }
 

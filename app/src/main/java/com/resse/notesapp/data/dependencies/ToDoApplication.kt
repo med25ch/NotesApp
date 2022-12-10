@@ -14,6 +14,7 @@ class ToDoApplication : Application() {
     val database by lazy { ToDoDataBase.getDatabase(this) }
     val repository by lazy { ToDoRepository(database.toDoDao()) }
 
+
     override fun onCreate() {
         super.onCreate()
 
