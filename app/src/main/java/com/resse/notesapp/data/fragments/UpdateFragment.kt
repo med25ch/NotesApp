@@ -1,4 +1,4 @@
-package com.resse.notesapp
+package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
@@ -7,6 +7,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.resse.notesapp.R
 
 
 class UpdateFragment : Fragment() {

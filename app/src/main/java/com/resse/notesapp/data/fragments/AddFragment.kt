@@ -1,4 +1,4 @@
-package com.resse.notesapp
+package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
@@ -12,6 +12,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.resse.notesapp.R
 import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.SharedViewModel

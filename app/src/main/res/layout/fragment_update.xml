@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UpdateFragment">
+    tools:context=".data.fragments.UpdateFragment">
 
 
     <!--this is the outlined layout box for the edit text-->

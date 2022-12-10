@@ -1,4 +1,4 @@
-package com.resse.notesapp.data
+package com.resse.notesapp.data.room
 
 import androidx.room.Dao
 import androidx.room.Insert

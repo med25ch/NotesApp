@@ -1,4 +1,4 @@
-package com.resse.notesapp.data
+package com.resse.notesapp.data.room
 
 import androidx.room.TypeConverter
 import com.resse.notesapp.data.models.Priority

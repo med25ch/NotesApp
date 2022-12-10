@@ -1,7 +1,7 @@
 package com.resse.notesapp.data.repository
 
 import androidx.annotation.WorkerThread
-import com.resse.notesapp.data.ToDoDao
+import com.resse.notesapp.data.room.ToDoDao
 import com.resse.notesapp.data.models.ToDoData
 import kotlinx.coroutines.flow.Flow
 
