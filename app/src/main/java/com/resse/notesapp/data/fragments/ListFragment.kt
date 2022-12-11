@@ -18,7 +18,7 @@ import com.resse.notesapp.data.viewModels.ToDoViewModel
 import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(){
 
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
@@ -72,5 +72,4 @@ class ListFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
 }
