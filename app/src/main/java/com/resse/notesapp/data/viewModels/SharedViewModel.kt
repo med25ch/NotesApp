@@ -3,14 +3,15 @@ package com.resse.notesapp.data.viewModels
 import android.app.Application
 import android.text.TextUtils
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.models.Priority
+import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.repository.ToDoRepository
 
 class SharedViewModel(val app: Application) : ViewModel() {
-
 
     fun verifyDataFromUser(mTitle: String, mDescription: String): Boolean {
         return if (TextUtils.isEmpty(mTitle) || TextUtils.isEmpty(mDescription)) {
