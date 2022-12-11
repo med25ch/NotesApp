@@ -2,11 +2,13 @@ package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +16,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.resse.notesapp.R
 import com.resse.notesapp.data.adapters.ToDoListAdapter
 import com.resse.notesapp.data.dependencies.ToDoApplication
-import com.resse.notesapp.data.viewModels.ToDoViewModel
-import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
+import com.resse.notesapp.data.interfaces.ItemClickListener
+import com.resse.notesapp.data.models.ToDoData
+import com.resse.notesapp.data.viewModels.*
+import timber.log.Timber
 
 
-class ListFragment : Fragment(){
+class ListFragment : Fragment() , ItemClickListener{
 
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
     }
+
+    private lateinit var viewModel: MyObservable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,9 +44,10 @@ class ListFragment : Fragment(){
         // Set Menu
         setupMenu()
 
+
         // Set Recycler View
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = ToDoListAdapter()
+        val adapter = ToDoListAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -53,6 +60,15 @@ class ListFragment : Fragment(){
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProvider(this)[MyObservable::class.java]
+           //ViewModelProviders.of(this)[MyObservable::class.java]
+        } ?: throw Exception("Invalid Activity")
+
     }
 
     private fun setupMenu() {
@@ -71,5 +87,11 @@ class ListFragment : Fragment(){
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    override fun onItemClickListener(data: ToDoData) {
+        Timber.d("ToDoData Clicked: ID : ${data.id} - ${data.title} - ${data.priority} ")
+        viewModel.data.value = data
+        findNavController().navigate(R.id.action_listFragment_to_updateFragment)
     }
 }
