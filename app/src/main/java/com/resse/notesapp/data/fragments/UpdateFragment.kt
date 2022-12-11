@@ -28,13 +28,21 @@ class UpdateFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_update, container, false)
 
-        // Update UI with Data
-        putDataToUI(view)
-
         // Set Menu
         setupMenu()
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProvider(this)[MyObservable::class.java]
+            //ViewModelProviders.of(this)[MyObservable::class.java]
+        } ?: throw Exception("Invalid Activity")
+
+        // Update UI with Data
+        putDataToUI(view)
     }
 
     private fun setupMenu() {
@@ -65,16 +73,9 @@ class UpdateFragment : Fragment() {
 
     private fun putDataToUI(view: View) {
         val mTitle = view.findViewById<EditText>(R.id.current_note_title_ET)
-
-        //val mPriority = radioButton.text.toString()
         val mDescription = view.findViewById<EditText>(R.id.current_note_description_ET)
 
-        viewModel = activity?.run {
-            ViewModelProvider(this)[MyObservable::class.java]
-            //ViewModelProviders.of(this)[MyObservable::class.java]
-        } ?: throw Exception("Invalid Activity")
-
-        val toDoData = viewModel.data.value
+        // Need Code for Priority
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
             val toDoData = viewModel.data.value
