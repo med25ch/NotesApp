@@ -3,6 +3,8 @@ package com.resse.notesapp.data.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -62,7 +64,7 @@ class UpdateFragment : Fragment() {
                         true
                     }
                     else ->  {
-                        findNavController().navigate(R.id.listFragment)
+                        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
                         true
                     }
                 }
@@ -75,6 +77,16 @@ class UpdateFragment : Fragment() {
         val mTitle = view.findViewById<EditText>(R.id.current_note_title_ET)
         val mDescription = view.findViewById<EditText>(R.id.current_note_description_ET)
 
+        // initiate the radioButton
+        val radioButtonHigh = view.findViewById<RadioButton>(R.id.radioUpdateHigh)
+        val radioButtonMedium = view.findViewById<RadioButton>(R.id.radioUpdateMedium)
+        val radioButtonLow = view.findViewById<RadioButton>(R.id.radioUpdateLow)
+        // List of RadioButtons
+        val radioButtonList = mutableListOf<RadioButton>()
+        radioButtonList.add(radioButtonHigh)
+        radioButtonList.add(radioButtonMedium)
+        radioButtonList.add(radioButtonLow)
+
         // Need Code for Priority
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
@@ -82,11 +94,11 @@ class UpdateFragment : Fragment() {
             if (toDoData != null) {
                 mTitle.setText(toDoData.title)
                 mDescription.setText(toDoData.description)
+                viewModel.validatePriority(toDoData.priority,radioButtonList)
             }
         })
 
-
-
     }
+
 
 }
