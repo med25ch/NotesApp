@@ -3,6 +3,8 @@ package com.resse.notesapp.data.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -28,13 +30,21 @@ class UpdateFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_update, container, false)
 
-        // Update UI with Data
-        putDataToUI(view)
-
         // Set Menu
         setupMenu()
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProvider(this)[MyObservable::class.java]
+            //ViewModelProviders.of(this)[MyObservable::class.java]
+        } ?: throw Exception("Invalid Activity")
+
+        // Update UI with Data
+        putDataToUI(view)
     }
 
     private fun setupMenu() {
@@ -54,7 +64,7 @@ class UpdateFragment : Fragment() {
                         true
                     }
                     else ->  {
-                        findNavController().navigate(R.id.listFragment)
+                        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
                         true
                     }
                 }
@@ -65,27 +75,30 @@ class UpdateFragment : Fragment() {
 
     private fun putDataToUI(view: View) {
         val mTitle = view.findViewById<EditText>(R.id.current_note_title_ET)
-
-        //val mPriority = radioButton.text.toString()
         val mDescription = view.findViewById<EditText>(R.id.current_note_description_ET)
 
-        viewModel = activity?.run {
-            ViewModelProvider(this)[MyObservable::class.java]
-            //ViewModelProviders.of(this)[MyObservable::class.java]
-        } ?: throw Exception("Invalid Activity")
+        // initiate the radioButton
+        val radioButtonHigh = view.findViewById<RadioButton>(R.id.radioUpdateHigh)
+        val radioButtonMedium = view.findViewById<RadioButton>(R.id.radioUpdateMedium)
+        val radioButtonLow = view.findViewById<RadioButton>(R.id.radioUpdateLow)
+        // List of RadioButtons
+        val radioButtonList = mutableListOf<RadioButton>()
+        radioButtonList.add(radioButtonHigh)
+        radioButtonList.add(radioButtonMedium)
+        radioButtonList.add(radioButtonLow)
 
-        val toDoData = viewModel.data.value
+        // Need Code for Priority
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
             val toDoData = viewModel.data.value
             if (toDoData != null) {
                 mTitle.setText(toDoData.title)
                 mDescription.setText(toDoData.description)
+                viewModel.validatePriority(toDoData.priority,radioButtonList)
             }
         })
 
-
-
     }
+
 
 }
