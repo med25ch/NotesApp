@@ -27,4 +27,22 @@ class MyObservable : ViewModel() {
         }
     }
 
+    fun parsePriority(priority: String) : Priority {
+        return when(priority){
+            "LOW" -> {
+                Priority.LOW}
+            "MEDIUM" -> {
+                Priority.MEDIUM}
+            "HIGH" -> {
+                Priority.HIGH}
+            else -> {
+                Priority.LOW}
+        }
+    }
+
+    fun updateToDoData(id:Int,title:String,description:String,priority:String) : ToDoData{
+        val priority = parsePriority(priority)
+        return ToDoData(id,title,priority,description)
+    }
+
 }

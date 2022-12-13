@@ -18,6 +18,10 @@ class ToDoViewModel (private val repository: ToDoRepository) : ViewModel(){
     fun insert(toDoData: ToDoData) = viewModelScope.launch {
         repository.insert(toDoData)
     }
+
+    fun updateData(toDoData: ToDoData) = viewModelScope.launch {
+        repository.updateData(toDoData)
+    }
 }
 
 class ToDoViewModelFactory(private val repository: ToDoRepository) : ViewModelProvider.Factory {
