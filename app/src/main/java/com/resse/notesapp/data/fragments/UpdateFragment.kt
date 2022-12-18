@@ -63,7 +63,7 @@ class UpdateFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         // Update UI with Data
-        putDataToUI(view)
+        putDataToUI()
     }
 
     private fun initComponent(view: View) {
@@ -94,6 +94,16 @@ class UpdateFragment : Fragment() {
                 return  when (menuItem.itemId){
                     R.id.menu_save -> {
                         updateItem(view)
+                        true
+                    }
+                    R.id.menu_delete -> {
+                        //delete item
+                        viewModel.data.observe(viewLifecycleOwner, Observer {
+                            val toDoData = viewModel.data.value
+                            if (toDoData != null) {
+                                mSharedViewModel.confirmItemRemoval(requireContext(),mTodoViewModel,toDoData,this@UpdateFragment)
+                            }
+                        })
                         true
                     }
                     else ->  {
@@ -134,7 +144,7 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    private fun putDataToUI(view: View) {
+    private fun putDataToUI() {
 
         // List of RadioButtons
         val radioButtonList = mutableListOf<RadioButton>()

@@ -28,4 +28,10 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
                 toDoDao.updateData(toDoData)
         }
 
+        @Suppress("RedundantSuspendModifier")
+        @WorkerThread
+        suspend fun deleteData(toDoData: ToDoData){
+                toDoDao.deleteData(toDoData)
+        }
+
 }

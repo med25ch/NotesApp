@@ -1,15 +1,19 @@
 package com.resse.notesapp.data.viewModels
 
+import android.app.AlertDialog
 import android.app.Application
+import android.content.Context
 import android.text.TextUtils
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.resse.notesapp.data.dependencies.ToDoApplication
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import com.resse.notesapp.R
+import com.resse.notesapp.data.fragments.UpdateFragment
 import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
-import com.resse.notesapp.data.repository.ToDoRepository
+import timber.log.Timber
 
 class SharedViewModel(val app: Application) : ViewModel() {
 
@@ -30,6 +34,31 @@ class SharedViewModel(val app: Application) : ViewModel() {
             else -> {
                 Priority.LOW}
         }
+    }
+
+    //Show AlertDialog to confirm deleting a note
+    fun confirmItemRemoval(context: Context,mTodoViewModel:ToDoViewModel,toDoData: ToDoData,fragment: UpdateFragment){
+        val builder = AlertDialog.Builder(context)
+        var success = false
+        builder.setPositiveButton(context.getString(R.string.POSITIVE_BUTTON_TEXT)){ _, _ ->
+            mTodoViewModel.deleteData(toDoData)
+            Toast.makeText(
+                context,
+                context.getString(R.string.SUCCESS_REMOVE_ITEM),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            fragment.findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+            success = true
+            Timber.d("Remove item id : ${toDoData.id} : Operation succeeded : $success")
+
+        }
+        builder.setNegativeButton(context.getString(R.string.NEGATIVE_BUTTON_TEXT)){_,_ ->
+            Timber.d("Remove item id : ${toDoData.id} : Operation Canceled by user")
+        }
+        builder.setTitle(context.getString(R.string.REMOVE_DIALOG_ITEM))
+        builder.setMessage(context.getString(R.string.REMOVE_CONFIRMATION_MESSAGE))
+        builder.create().show()
     }
 }
 
