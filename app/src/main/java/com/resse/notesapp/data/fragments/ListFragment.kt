@@ -2,11 +2,14 @@ package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -26,6 +29,10 @@ class ListFragment : Fragment() , ItemClickListener{
 
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
+    }
+
+    private val mSharedViewModel : SharedViewModel by viewModels{
+        SharedViewModelFactory(activity?.application)
     }
 
     private lateinit var viewModel: MyObservable
@@ -56,10 +63,31 @@ class ListFragment : Fragment() , ItemClickListener{
         // in the foreground.
         mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
             // Update the cached copy of the words in the adapter.
-            toDos.let { adapter.submitList(it) }
+            toDos.let {
+                adapter.submitList(it)
+                mSharedViewModel.isDatabaseEmpty(toDos)
+            }
         }
 
+        // Show empty Recyclerview
+        mSharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
+            showEmptyDatabaseViews(it)
+        })
+
         return view
+    }
+
+    private fun showEmptyDatabaseViews(emptyDatabase : Boolean) {
+        var noDataImageView = view?.findViewById<ImageView>(R.id.no_data_imageView)
+        var noDataTextView = view?.findViewById<TextView>(R.id.no_data_textView)
+
+        if(emptyDatabase){
+            noDataImageView?.visibility = View.VISIBLE
+            noDataTextView?.visibility = View.VISIBLE
+        }else{
+            noDataImageView?.visibility = View.INVISIBLE
+            noDataTextView?.visibility = View.INVISIBLE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,9 +110,17 @@ class ListFragment : Fragment() , ItemClickListener{
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
-                findNavController().navigate(R.id.addFragment)
-                return true
+
+                return when (menuItem.itemId) {
+                    R.id.menu_delete_all -> {
+                        //delete all items
+                        mTodoViewModel.confirmItemRemoval(requireContext())
+                        true
+                    }
+                    else -> {
+                        true
+                    }
+                }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }

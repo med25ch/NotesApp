@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -16,6 +17,12 @@ import com.resse.notesapp.data.models.ToDoData
 import timber.log.Timber
 
 class SharedViewModel(val app: Application) : ViewModel() {
+
+    val emptyDatabase : MutableLiveData<Boolean> = MutableLiveData(true)
+
+    fun isDatabaseEmpty(toDoData: List<ToDoData>){
+        emptyDatabase.value = toDoData.isEmpty()
+    }
 
     fun verifyDataFromUser(mTitle: String, mDescription: String): Boolean {
         return if (TextUtils.isEmpty(mTitle) || TextUtils.isEmpty(mDescription)) {

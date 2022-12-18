@@ -12,4 +12,5 @@
     <string name="NEGATIVE_BUTTON_TEXT">No</string>
     <string name="REMOVE_DIALOG_ITEM">Remove Note</string>
     <string name="REMOVE_CONFIRMATION_MESSAGE">Are you sure you want to remove ?</string>
+    <string name="REMOVE_ITEMS_DIALOG">Remove all notes</string>
 </resources>
