@@ -22,6 +22,7 @@ import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.interfaces.ItemClickListener
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.*
+import com.resse.notesapp.databinding.FragmentListBinding
 import timber.log.Timber
 
 
@@ -37,23 +38,24 @@ class ListFragment : Fragment() , ItemClickListener{
 
     private lateinit var viewModel: MyObservable
 
+    private var _binding : FragmentListBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
-
-        view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener{
-            findNavController().navigate(R.id.action_listFragment_to_addFragment)
-        }
+        // Data binding
+        _binding = FragmentListBinding.inflate(inflater,container,false)
+        binding.lifecycleOwner = this
+        binding.mSharedViewModel = mSharedViewModel
 
         // Set Menu
         setupMenu()
 
 
         // Set Recycler View
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView = binding.recyclerView
         val adapter = ToDoListAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -69,12 +71,11 @@ class ListFragment : Fragment() , ItemClickListener{
             }
         }
 
-        // Show empty Recyclerview
-        mSharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
-            showEmptyDatabaseViews(it)
-        })
+        return binding.root
+    }
 
-        return view
+    private fun setupRecyclerView() {
+        TODO("Not yet implemented")
     }
 
     private fun showEmptyDatabaseViews(emptyDatabase : Boolean) {
@@ -129,5 +130,11 @@ class ListFragment : Fragment() , ItemClickListener{
         Timber.d("ToDoData Clicked: ID : ${data.id} - ${data.title} - ${data.priority} ")
         viewModel.data.value = data
         findNavController().navigate(R.id.action_listFragment_to_updateFragment)
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
