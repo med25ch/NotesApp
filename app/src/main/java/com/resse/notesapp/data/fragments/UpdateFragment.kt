@@ -7,6 +7,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,19 +17,13 @@ import androidx.navigation.fragment.findNavController
 import com.resse.notesapp.R
 import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.viewModels.*
+import com.resse.notesapp.databinding.FragmentUpdateBinding
 import timber.log.Timber
 
 
 class UpdateFragment : Fragment() {
 
     private lateinit var viewModel: MyObservable
-
-    private lateinit var mTitle:EditText
-    private lateinit var mDescription:EditText
-    private lateinit var radioUpdate:RadioGroup
-    private lateinit var radioButtonHigh:RadioButton
-    private lateinit var radioButtonMedium:RadioButton
-    private lateinit var radioButtonLow:RadioButton
 
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
@@ -38,21 +33,27 @@ class UpdateFragment : Fragment() {
         SharedViewModelFactory(activity?.application)
     }
 
+    // The type of binding class will change from fragment to fragment
+    private var _binding : FragmentUpdateBinding? = null
+
+    private val binding get() = _binding!! // Helper Property
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_update, container, false)
+
+        // Data binding
+        _binding = FragmentUpdateBinding.inflate(inflater,container,false)
+        binding.lifecycleOwner = this
+        binding.mSharedViewModel = mSharedViewModel
 
         // Set Menu
-        setupMenu(view)
+        setupMenu()
 
-        //init component
-        initComponent(view)
 
-        return view
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,20 +67,7 @@ class UpdateFragment : Fragment() {
         putDataToUI()
     }
 
-    private fun initComponent(view: View) {
-        mTitle = view.findViewById<EditText>(R.id.current_note_title_ET)
-        mDescription = view.findViewById<EditText>(R.id.current_note_description_ET)
-
-        // get selected radio button from radioGroup
-        radioUpdate = view.findViewById<RadioGroup>(R.id.radioUpdate)
-
-        // initiate the radioButton
-        radioButtonHigh = view.findViewById<RadioButton>(R.id.radioUpdateHigh)
-        radioButtonMedium = view.findViewById<RadioButton>(R.id.radioUpdateMedium)
-        radioButtonLow = view.findViewById<RadioButton>(R.id.radioUpdateLow)
-    }
-
-    private fun setupMenu(view: View) {
+    private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
                 // Handle for example visibility of menu items
@@ -93,7 +81,7 @@ class UpdateFragment : Fragment() {
                 // Validate and handle the selected menu item
                 return  when (menuItem.itemId){
                     R.id.menu_save -> {
-                        updateItem(view)
+                        updateItem()
                         true
                     }
                     R.id.menu_delete -> {
@@ -116,15 +104,14 @@ class UpdateFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun updateItem(view: View) {
-        val title = mTitle.text.toString()
-        val description = mDescription.text.toString()
+    private fun updateItem() {
+        val title = binding.currentNoteTitleET.text.toString()
+        val description = binding.currentNoteDescriptionET.text.toString()
 
         // find the radioButton by returned id
-        val selectedId =radioUpdate.checkedRadioButtonId
-        val radioButton = view.findViewById<RadioButton>(selectedId)
+        val selectedId =binding.radioUpdate.checkedRadioButtonId
+        val radioButton = binding.radioUpdate.findViewById<RadioButton>(selectedId)
         val mPriority = radioButton.text.toString()
-
 
         val validation = mSharedViewModel.verifyDataFromUser(title,description)
 
@@ -148,21 +135,26 @@ class UpdateFragment : Fragment() {
 
         // List of RadioButtons
         val radioButtonList = mutableListOf<RadioButton>()
-        radioButtonList.add(radioButtonHigh)
-        radioButtonList.add(radioButtonMedium)
-        radioButtonList.add(radioButtonLow)
+        radioButtonList.add(binding.radioUpdateHigh)
+        radioButtonList.add(binding.radioUpdateMedium)
+        radioButtonList.add(binding.radioUpdateLow)
 
         // Need Code for Priority
 
         viewModel.data.observe(viewLifecycleOwner, Observer {
             val toDoData = viewModel.data.value
             if (toDoData != null) {
-                mTitle.setText(toDoData.title)
-                mDescription.setText(toDoData.description)
+                binding.currentNoteTitleET.setText(toDoData.title)
+                binding.currentNoteDescriptionET.setText(toDoData.description)
                 viewModel.validatePriority(toDoData.priority,radioButtonList)
             }
         })
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
