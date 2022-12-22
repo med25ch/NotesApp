@@ -1,111 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".data.fragments.UpdateFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-    <!--this is the outlined layout box for the edit text-->
-    <!--this layout must be used to reposition or change the
-        height and width of the edit text-->
-    <!--to get the outlined edit text the style attribute as
-        following must be invoked-->
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Note title">
-
-        <!--this is the actual edit text which takes the input-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/current_note_title_ET"
-            android:layout_width="300dp"
-            android:maxLength="32"
-            android:maxLines="2"
-            android:layout_height="wrap_content"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+    <data>
+        <variable
+            name="mSharedViewModel"
+            type="com.resse.notesapp.data.viewModels.SharedViewModel"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        android:gravity="center">
+        tools:context=".data.fragments.UpdateFragment">
 
-        <RadioGroup
-            android:id="@+id/radioUpdate"
-            android:layout_width="wrap_content"
+
+        <!--this is the outlined layout box for the edit text-->
+        <!--this layout must be used to reposition or change the
+            height and width of the edit text-->
+        <!--to get the outlined edit text the style attribute as
+            following must be invoked-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
+            android:hint="Note title">
 
-            <RadioButton
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/current_note_title_ET"
+                android:layout_width="300dp"
+                android:maxLength="32"
+                android:maxLines="2"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            android:gravity="center">
+
+            <RadioGroup
+                android:id="@+id/radioUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HIGH"
-                android:id="@+id/radioUpdateHigh"
-                android:button="@color/transparent"
-                android:background="@drawable/radio_selector"
-                android:padding="16dp"
-                android:elevation="5dp"
-                android:layout_margin="16dp">
-            </RadioButton>
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MEDIUM"
-                android:id="@+id/radioUpdateMedium"
-                android:button="@color/transparent"
-                android:background="@drawable/radio_selector_medium"
-                android:padding="10dp"
-                android:elevation="5dp"
-                android:layout_margin="16dp">
-            </RadioButton>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOW"
-                android:id="@+id/radioUpdateLow"
-                android:button="@color/transparent"
-                android:background="@drawable/radio_selector_low"
-                android:padding="16dp"
-                android:elevation="5dp"
-                android:layout_margin="16dp">
-            </RadioButton>
-        </RadioGroup>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HIGH"
+                    android:id="@+id/radioUpdateHigh"
+                    android:button="@color/transparent"
+                    android:background="@drawable/radio_selector"
+                    android:padding="16dp"
+                    android:elevation="5dp"
+                    android:layout_margin="16dp"></RadioButton>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MEDIUM"
+                    android:id="@+id/radioUpdateMedium"
+                    android:button="@color/transparent"
+                    android:background="@drawable/radio_selector_medium"
+                    android:padding="10dp"
+                    android:elevation="5dp"
+                    android:layout_margin="16dp"></RadioButton>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOW"
+                    android:id="@+id/radioUpdateLow"
+                    android:button="@color/transparent"
+                    android:background="@drawable/radio_selector_low"
+                    android:padding="16dp"
+                    android:elevation="5dp"
+                    android:layout_margin="16dp"></RadioButton>
+            </RadioGroup>
 
 
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:hint="Note Description">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/current_note_description_ET"
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:gravity="top" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Note Description">
-
-        <!--this is the actual edit text which takes the input-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/current_note_description_ET"
-            android:layout_width="300dp"
-            android:layout_height="250dp"
-            android:gravity="top"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-</LinearLayout>
+</layout>

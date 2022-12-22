@@ -38,8 +38,10 @@ class ListFragment : Fragment() , ItemClickListener{
 
     private lateinit var viewModel: MyObservable
 
+    // The type of binding class will change from fragment to fragment
     private var _binding : FragmentListBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding get() = _binding!! // Helper Property
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,10 +74,6 @@ class ListFragment : Fragment() , ItemClickListener{
         }
 
         return binding.root
-    }
-
-    private fun setupRecyclerView() {
-        TODO("Not yet implemented")
     }
 
     private fun showEmptyDatabaseViews(emptyDatabase : Boolean) {
