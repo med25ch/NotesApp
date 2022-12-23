@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -20,6 +21,7 @@ import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.SharedViewModel
 import com.resse.notesapp.data.viewModels.SharedViewModelFactory
+import com.resse.notesapp.databinding.RowLayoutBinding
 
 class ToDoListAdapter(private val itemClickListener: ItemClickListener) : ListAdapter<ToDoData, ToDoListAdapter.ToDoViewHolder>(ToDosComparator()){
 
@@ -29,23 +31,21 @@ class ToDoListAdapter(private val itemClickListener: ItemClickListener) : ListAd
 
     override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.title,current.description,current.priority)
+        holder.bind(current)
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClickListener(current)
         }
     }
 
-    class ToDoViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ToDoViewHolder (private val binding: RowLayoutBinding) : RecyclerView.ViewHolder(binding.root){
 
-        private val titleTxt:TextView = itemView.findViewById(R.id.title_txt)
-        private val descriptionTxt:TextView = itemView.findViewById(R.id.description_txt)
-        private val priorityImage : ImageView = itemView.findViewById(R.id.iv_priority_indicator)
+        fun bind(toDoData: ToDoData) {
 
-        fun bind(title: String?, description: String?, priority: Priority) {
-            titleTxt.text = title
-            descriptionTxt.text = description
-            val color = ContextCompat.getColor(itemView.context,getColorFromPriority(priority))
-            ImageViewCompat.setImageTintList(priorityImage, ColorStateList.valueOf(color))
+            binding.toDoData = toDoData
+            binding.executePendingBindings()
+
+            val color = ContextCompat.getColor(binding.root.context,getColorFromPriority(toDoData.priority))
+            ImageViewCompat.setImageTintList(binding.ivPriorityIndicator, ColorStateList.valueOf(color))
         }
 
         private fun getColorFromPriority(priority: Priority): Int {
@@ -59,9 +59,9 @@ class ToDoListAdapter(private val itemClickListener: ItemClickListener) : ListAd
 
         companion object {
             fun create(parent: ViewGroup): ToDoViewHolder {
-                val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.row_layout, parent, false)
-                return ToDoViewHolder(view)
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RowLayoutBinding.inflate(layoutInflater,parent,false)
+                return ToDoViewHolder(binding)
             }
         }
     }

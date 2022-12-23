@@ -96,5 +96,8 @@ dependencies {
     // Timber for logging
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
+    //Recycler view animation
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+
 
 }
