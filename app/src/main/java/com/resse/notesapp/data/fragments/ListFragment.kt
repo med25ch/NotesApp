@@ -76,19 +76,6 @@ class ListFragment : Fragment() , ItemClickListener{
         return binding.root
     }
 
-    private fun showEmptyDatabaseViews(emptyDatabase : Boolean) {
-        var noDataImageView = view?.findViewById<ImageView>(R.id.no_data_imageView)
-        var noDataTextView = view?.findViewById<TextView>(R.id.no_data_textView)
-
-        if(emptyDatabase){
-            noDataImageView?.visibility = View.VISIBLE
-            noDataTextView?.visibility = View.VISIBLE
-        }else{
-            noDataImageView?.visibility = View.INVISIBLE
-            noDataTextView?.visibility = View.INVISIBLE
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = activity?.run {
@@ -129,7 +116,6 @@ class ListFragment : Fragment() , ItemClickListener{
         viewModel.data.value = data
         findNavController().navigate(R.id.action_listFragment_to_updateFragment)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -31,5 +31,9 @@ class BindingAdapters {
                 else -> {}
             }
         }
+
+//        @BindingAdapter("android:getColorFromPriority")
+//        @JvmStatic
+//        fun getColorFromPriority()
     }
 }
