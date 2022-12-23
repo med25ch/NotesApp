@@ -13,8 +13,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.resse.notesapp.R
 import com.resse.notesapp.data.adapters.ToDoListAdapter
@@ -23,6 +25,7 @@ import com.resse.notesapp.data.interfaces.ItemClickListener
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.*
 import com.resse.notesapp.databinding.FragmentListBinding
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import timber.log.Timber
 
 
@@ -60,7 +63,12 @@ class ListFragment : Fragment() , ItemClickListener{
         val recyclerView = binding.recyclerView
         val adapter = ToDoListAdapter(this)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+
+        //Animation for Recycler view
+        recyclerView.itemAnimator = SlideInUpAnimator().apply {
+            addDuration = 200
+        }
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
