@@ -1,6 +1,7 @@
 package com.resse.notesapp.data.repository
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
 import com.resse.notesapp.data.room.ToDoDao
 import com.resse.notesapp.data.models.ToDoData
 import kotlinx.coroutines.flow.Flow
@@ -39,5 +40,12 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
         suspend fun deleteAllData(){
                 toDoDao.deleteAllData()
         }
+
+        @Suppress("RedundantSuspendModifier")
+        @WorkerThread
+        suspend fun searchDatabase(searchQuery: String) : LiveData<List<ToDoData>> {
+                return toDoDao.searchDatabase(searchQuery)
+        }
+
 
 }
