@@ -9,6 +9,7 @@ import com.resse.notesapp.R
 import com.resse.notesapp.data.fragments.UpdateFragment
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.repository.ToDoRepository
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -37,6 +38,20 @@ class ToDoViewModel (private val repository: ToDoRepository) : ViewModel(){
     fun deleteAllData() = viewModelScope.launch {
         repository.deleteAllData()
     }
+
+    fun searchDatabase(searchQuery:String) : LiveData<List<ToDoData>>{
+
+        lateinit var result : LiveData<List<ToDoData>>
+        viewModelScope.launch {
+             var deffered = viewModelScope.async {
+                repository.searchDatabase(searchQuery)
+            }
+             result = deffered.await()
+        }
+
+        return result
+    }
+
 
     fun confirmItemRemoval(context: Context){
         val builder = AlertDialog.Builder(context)

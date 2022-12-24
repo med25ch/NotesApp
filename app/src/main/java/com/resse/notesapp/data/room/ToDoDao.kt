@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.resse.notesapp.data.models.ToDoData
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,7 @@ interface ToDoDao {
 
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllData()
+
+    @Query("SELECT * FROM todo_table WHERE title LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String) : LiveData<List<ToDoData>>
 }
