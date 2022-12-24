@@ -45,7 +45,7 @@ class UpdateFragment : Fragment() {
 
         // Data binding
         _binding = FragmentUpdateBinding.inflate(inflater,container,false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = mSharedViewModel
 
         // Set Menu

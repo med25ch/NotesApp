@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ToDoDao {
 
-    @Query("SELECT * FROM todo_table ORDER BY id ASC")
+    @Query("SELECT * FROM todo_table ORDER BY id DESC")
     fun getAllToDoData() : Flow<List<ToDoData>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -23,6 +23,6 @@ interface ToDoDao {
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllData()
 
-    @Query("SELECT * FROM todo_table WHERE title LIKE :searchQuery")
+    @Query("SELECT * FROM todo_table WHERE title LIKE :searchQuery ORDER BY id DESC")
     fun searchDatabase(searchQuery: String) : LiveData<List<ToDoData>>
 }

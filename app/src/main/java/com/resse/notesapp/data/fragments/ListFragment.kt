@@ -34,6 +34,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     private lateinit var viewModel: MyObservable
     private lateinit var recyclerViewAdapter : ToDoListAdapter
+    private var searchCanProcess : Boolean = false
 
     // The type of binding class will change from fragment to fragment
     private var _binding : FragmentListBinding? = null
@@ -46,7 +47,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
     ): View? {
         // Data binding
         _binding = FragmentListBinding.inflate(inflater,container,false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = mSharedViewModel
 
         // Set Menu
@@ -59,6 +60,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
 
+
         //Animation for Recycler view
         recyclerView.itemAnimator = SlideInUpAnimator().apply {
             addDuration = 200
@@ -68,7 +70,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
         mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
-            // Update the cached copy of the words in the adapter.
+            // Update the cached copy of the notes in the adapter.
             toDos.let {
                 recyclerViewAdapter.submitList(it)
                 mSharedViewModel.isDatabaseEmpty(toDos)
@@ -131,22 +133,26 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        if(query != null){
+        Timber.d("onQueryTextSubmit || Can Process Search : $searchCanProcess")
+        if(query != null && searchCanProcess){
             searchThroughDatabase(query)
         }
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        if(newText != null){
+        Timber.d("onQueryTextChange || Can Process Search : $searchCanProcess")
+        if(newText != null && searchCanProcess){
             searchThroughDatabase(newText)
         }
+        searchCanProcess = true
         return true
     }
 
     private fun searchThroughDatabase(query: String) {
         var searchQuery = query
         searchQuery = "%$searchQuery%"
+
         mTodoViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { toDos ->
             // Update the cached copy of the words in the adapter.
             toDos.let {
