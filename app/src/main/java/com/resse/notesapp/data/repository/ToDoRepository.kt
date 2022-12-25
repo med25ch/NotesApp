@@ -47,5 +47,18 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
                 return toDoDao.searchDatabase(searchQuery)
         }
 
+        @Suppress("RedundantSuspendModifier")
+        @WorkerThread
+        suspend fun sortHighToLow() : LiveData<List<ToDoData>> {
+                return toDoDao.sortHighToLow()
+        }
+
+        @Suppress("RedundantSuspendModifier")
+        @WorkerThread
+        suspend fun sortLowToHigh() : LiveData<List<ToDoData>> {
+                return toDoDao.sortLowToHigh()
+        }
+
+
 
 }
