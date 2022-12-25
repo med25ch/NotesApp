@@ -13,4 +13,6 @@
     <string name="REMOVE_DIALOG_ITEM">Remove Note</string>
     <string name="REMOVE_CONFIRMATION_MESSAGE">Are you sure you want to remove ?</string>
     <string name="REMOVE_ITEMS_DIALOG">Remove all notes</string>
+    <string name="action_title_sort">Sort</string>
+
 </resources>

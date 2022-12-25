@@ -2,6 +2,7 @@ package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.resse.notesapp.R
 import com.resse.notesapp.data.adapters.ToDoListAdapter
 import com.resse.notesapp.data.dependencies.ToDoApplication
@@ -32,9 +35,13 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         SharedViewModelFactory(activity?.application)
     }
 
+    private val mSavedStateViewModel : SavedStateViewModel by viewModels()
+
+
     private lateinit var viewModel: MyObservable
     private lateinit var recyclerViewAdapter : ToDoListAdapter
     private var searchCanProcess : Boolean = false
+
 
     // The type of binding class will change from fragment to fragment
     private var _binding : FragmentListBinding? = null
@@ -69,12 +76,11 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         // Add an observer on the LiveData returned by allToDoData.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
-            // Update the cached copy of the notes in the adapter.
-            toDos.let {
-                recyclerViewAdapter.submitList(it)
-                mSharedViewModel.isDatabaseEmpty(toDos)
-            }
+        var restoredIndex = mSavedStateViewModel.restoreSortingIndex()
+        if (restoredIndex != null){
+            matchSelectedChoiceWithSort(mSavedStateViewModel.restoreSortingIndex()!!)
+        }else {
+            matchSelectedChoiceWithSort(4)
         }
 
         return binding.root
@@ -86,7 +92,6 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
             ViewModelProvider(this)[MyObservable::class.java]
            //ViewModelProviders.of(this)[MyObservable::class.java]
         } ?: throw Exception("Invalid Activity")
-
     }
 
     private fun setupMenu() {
@@ -112,6 +117,11 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                         //delete all items
                         mTodoViewModel.confirmItemRemoval(requireContext())
                         true
+                    }
+
+                    R.id.menu_sort ->{
+                        showRadioConfirmationDialog()
+                        return true
                     }
                     else -> {
                         true
@@ -158,6 +168,76 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
             toDos.let {
                 recyclerViewAdapter.submitList(it)
                 Timber.d("User searched for : ID : $searchQuery || Found : ${toDos.count()} notes")
+            }
+        }
+    }
+
+    fun showRadioConfirmationDialog() {
+        var dialogChoices = mTodoViewModel.dialogChoices
+
+        var selectedChoice : String
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Sort by")
+            .setSingleChoiceItems(dialogChoices, mTodoViewModel.selectedChoiceIndex) { dialog_, which ->
+                mTodoViewModel.selectedChoiceIndex = which
+                selectedChoice = dialogChoices[which]
+            }
+            .setPositiveButton("Ok") { dialog, which ->
+                Toast.makeText(context, "index ${mTodoViewModel.selectedChoiceIndex}", Toast.LENGTH_SHORT)
+                    .show()
+                matchSelectedChoiceWithSort(mTodoViewModel.selectedChoiceIndex)
+
+                //Save index to SavedStateHandle
+                mSavedStateViewModel.saveSortingIndex(mTodoViewModel.selectedChoiceIndex)
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun matchSelectedChoiceWithSort(selectedChoiceIndex: Int) {
+        when(selectedChoiceIndex){
+            0 -> {
+                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
+                    // Update the cached copy of the words in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+                    }
+                }}
+            1 -> {
+                mTodoViewModel.sortLowToHigh().observe(viewLifecycleOwner){ toDos ->
+                    // Update the cached copy of the words in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+                    }
+                }}
+            2 -> {
+                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
+                    // Update the cached copy of the words in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+                    }
+                }}
+            3 -> {
+                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
+                    // Update the cached copy of the words in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+                    }
+                }}
+            else -> {
+                mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
+                    // Update the cached copy of the notes in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+                    }
+                }
             }
         }
     }

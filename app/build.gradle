@@ -99,5 +99,8 @@ dependencies {
     //Recycler view animation
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
+
 
 }
