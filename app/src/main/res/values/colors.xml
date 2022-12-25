@@ -15,5 +15,7 @@
     <color name="darkGrey">#5A5A5A</color>
     <color name="appBackground">#99d5fe</color>
     <color name="fabBackground">#99d5fe</color>
+    <color name="secondDarkGrey">#7d8386</color>
+
 
 </resources>
