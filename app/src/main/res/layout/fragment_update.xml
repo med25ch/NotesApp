@@ -12,35 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
         tools:context=".data.fragments.UpdateFragment">
 
-
-        <!--this is the outlined layout box for the edit text-->
-        <!--this layout must be used to reposition or change the
-            height and width of the edit text-->
-        <!--to get the outlined edit text the style attribute as
-            following must be invoked-->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Note title"
-            android:fontFamily="sans-serif-condensed">
-
-            <!--this is the actual edit text which takes the input-->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/current_note_title_ET"
+            android:orientation="vertical"
+            android:gravity="center">
+            <!--this is the outlined layout box for the edit text-->
+            <!--this layout must be used to reposition or change the
+                height and width of the edit text-->
+            <!--to get the outlined edit text the style attribute as
+                following must be invoked-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:maxLength="32"
-                android:maxLines="2" />
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Note title"
+                android:fontFamily="sans-serif-condensed">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--this is the actual edit text which takes the input-->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/current_note_title_ET"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:maxLength="32"
+                    android:maxLines="2" />
 
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="HIGH"
+                    android:textColor="@color/black"
                     android:fontFamily="sans-serif"
                     android:id="@+id/radioUpdateHigh"
                     android:button="@color/transparent"
@@ -77,6 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MEDIUM"
+                    android:textColor="@color/black"
                     android:fontFamily="sans-serif"
                     android:id="@+id/radioUpdateMedium"
                     android:button="@color/transparent"
@@ -89,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LOW"
+                    android:textColor="@color/black"
                     android:fontFamily="sans-serif"
                     android:id="@+id/radioUpdateLow"
                     android:button="@color/transparent"
@@ -101,24 +108,32 @@
 
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Note Description"
-            android:fontFamily="sans-serif-condensed">
+            android:orientation="vertical"
+            android:gravity="center">
 
-            <!--this is the actual edit text which takes the input-->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/current_note_description_ET"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
-                android:layout_height="250dp"
-                android:gravity="top" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Note Description"
+                android:fontFamily="sans-serif-condensed">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--this is the actual edit text which takes the input-->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/current_note_description_ET"
+                    android:layout_width="300dp"
+                    android:layout_height="250dp"
+                    android:gravity="top" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
 
 
     </LinearLayout>
