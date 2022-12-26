@@ -17,7 +17,7 @@ import timber.log.Timber
 
 class ToDoViewModel (private val repository: ToDoRepository) : ViewModel(){
 
-    val dialogChoices = arrayOf("Priority : High to low", "Priority : low to high", "Creation date : from newest", "Creation date : from oldest")
+    val dialogChoices = arrayOf("Priority : From newest","Priority : High to low", "Priority : low to high","Creation date : from oldest")
     var selectedChoiceIndex: Int = 0
 
     // Using LiveData and caching what allWords returns has several benefits:

@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -73,17 +74,42 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
             addDuration = 200
         }
 
-        // Add an observer on the LiveData returned by allToDoData.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
+        // Using SavedState
         var restoredIndex = mSavedStateViewModel.restoreSortingIndex()
+
+        //Using SharedPreferences :
+        val sharedPref = activity?.getSharedPreferences(
+            getString(R.string.list_fragment_key), Context.MODE_PRIVATE)
+
+        //Read From Shared pref :
+        val restoredIndexFromSharedPref = readFromSharedPref()
+
         if (restoredIndex != null){
             matchSelectedChoiceWithSort(mSavedStateViewModel.restoreSortingIndex()!!)
         }else {
-            matchSelectedChoiceWithSort(4)
+            if (sharedPref != null){
+                matchSelectedChoiceWithSort(restoredIndexFromSharedPref)
+            }else{
+                matchSelectedChoiceWithSort(4)
+            }
         }
 
         return binding.root
+    }
+
+    private fun readFromSharedPref(): Int {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val defaultValue = 4
+        return sharedPref?.getInt(getString(R.string.list_fragment_key), defaultValue)
+            ?: defaultValue
+    }
+
+    private fun writeToSharedPref(index :Int){
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt(getString(R.string.list_fragment_key), index)
+            apply()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -189,6 +215,10 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
                 //Save index to SavedStateHandle
                 mSavedStateViewModel.saveSortingIndex(mTodoViewModel.selectedChoiceIndex)
+
+                //Write to shared Pref
+                writeToSharedPref(mTodoViewModel.selectedChoiceIndex)
+
             }
             .setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()
@@ -199,30 +229,56 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
     private fun matchSelectedChoiceWithSort(selectedChoiceIndex: Int) {
         when(selectedChoiceIndex){
             0 -> {
+                // Add an observer on the LiveData returned by allToDoData.
+                // The onChanged() method fires when the observed data changes and the activity is
+                // in the foreground.
+                mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
+                    // Update the cached copy of the notes in the adapter.
+                    toDos.let {
+                        recyclerViewAdapter.submitList(it)
+                        mSharedViewModel.isDatabaseEmpty(toDos)
+
+                    }
+                }
+                Timber.d("Sorting notes : Newest to Oldest")
+            }
+            1 -> {
+                // Add an observer on the LiveData returned by allToDoData.
+                // The onChanged() method fires when the observed data changes and the activity is
+                // in the foreground.
                 mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
                         mSharedViewModel.isDatabaseEmpty(toDos)
                     }
-                }}
-            1 -> {
+                }
+
+                Timber.d("Sorting notes : High to Low Priority")
+            }
+            2 -> {
                 mTodoViewModel.sortLowToHigh().observe(viewLifecycleOwner){ toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
                         mSharedViewModel.isDatabaseEmpty(toDos)
                     }
-                }}
-            2 -> {
+                }
+
+                Timber.d("Sorting notes : Low to High Priority")
+            }
+            3 -> {
                 mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
                         mSharedViewModel.isDatabaseEmpty(toDos)
                     }
-                }}
-            3 -> {
+                }
+
+                Timber.d("Sorting notes : Oldest to Newest")
+            }
+            4 -> {
                 mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
