@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.activities
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
