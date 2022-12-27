@@ -99,7 +99,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     private fun readFromSharedPref(): Int {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val defaultValue = 4
+        val defaultValue = 0
         return sharedPref?.getInt(getString(R.string.list_fragment_key), defaultValue)
             ?: defaultValue
     }
@@ -200,11 +200,12 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     fun showRadioConfirmationDialog() {
         var dialogChoices = mTodoViewModel.dialogChoices
-
         var selectedChoice : String
+        var selectedChoiceIndex = readFromSharedPref()
+
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Sort by")
-            .setSingleChoiceItems(dialogChoices, mTodoViewModel.selectedChoiceIndex) { dialog_, which ->
+            .setSingleChoiceItems(dialogChoices, selectedChoiceIndex) { dialog_, which ->
                 mTodoViewModel.selectedChoiceIndex = which
                 selectedChoice = dialogChoices[which]
             }
