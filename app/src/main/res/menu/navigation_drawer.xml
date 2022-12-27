@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/Todo_item"
+            android:icon="@drawable/ic_todo_list_com"
+            android:title="@string/MY_LIST_ITEM_TITLE"
+            android:checked="true" />
+        <item
+            android:id="@+id/ideas_item"
+            android:icon="@drawable/ic_idea_com"
+            android:title="@string/IDEAS_ITEM" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/setting_item"
+            android:icon="@drawable/ic_settings_com"
+            android:title="@string/SETTING_ITEM" />
+    </group>
+</menu>

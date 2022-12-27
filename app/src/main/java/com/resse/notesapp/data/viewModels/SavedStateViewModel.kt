@@ -16,10 +16,6 @@ class SavedStateViewModel (private val state : SavedStateHandle) : ViewModel(){
     fun restoreSortingIndex() : Int?{
        return state.get<Int>(SORTING_KEY)
     }
-
-    fun getAllKeys(): Set<String> {
-        return state.keys()
-    }
 }
 
 //class SavedStateViewModelFactory(owner: SavedStateRegistryOwner,defaultArgs : Bundle?) : AbstractSavedStateViewModelFactory(owner,defaultArgs) {

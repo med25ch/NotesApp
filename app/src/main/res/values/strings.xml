@@ -15,5 +15,10 @@
     <string name="REMOVE_ITEMS_DIALOG">Remove all notes</string>
     <string name="action_title_sort">Sort</string>
     <string name="list_fragment_key">PRIORITY_KEY_PREF</string>
+    <string name="header_title">My App Title</string>
+    <string name="header_text">Something good</string>
+    <string name="MY_LIST_ITEM_TITLE">My list</string>
+    <string name="IDEAS_ITEM">Ideas</string>
+    <string name="SETTING_ITEM">Settings</string>
 
 </resources>
