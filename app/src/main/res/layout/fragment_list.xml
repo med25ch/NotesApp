@@ -26,6 +26,56 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAddPersonalNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:src="@drawable/ic_todo_list_com"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:backgroundTint="@color/appBackground"
+            android:navigateToAddFragment="@{true}"
+            app:tint="@color/white" />
+        <TextView
+            android:id="@+id/add_personal_note_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Add Personal note"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/fbAddPersonalNote"
+            app:layout_constraintEnd_toStartOf="@+id/fbAddPersonalNote"
+            app:layout_constraintTop_toTopOf="@+id/fbAddPersonalNote" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAddIdeaNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:src="@drawable/ic_idea_com"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:backgroundTint="@color/appBackground"
+            android:navigateToIdeaFragment="@{true}"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/add_idea_note_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Add Idea note"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/fbAddIdeaNote"
+            app:layout_constraintEnd_toStartOf="@+id/fbAddIdeaNote"
+            app:layout_constraintTop_toTopOf="@+id/fbAddIdeaNote" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,11 +85,8 @@
             android:src="@drawable/ic_menu_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:navigateToAddFragment="@{true}"
             app:backgroundTint="@color/appBackground"
             app:tint="@color/white" />
-
-
 
         <ImageView
             android:id="@+id/no_data_imageView"
