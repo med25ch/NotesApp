@@ -28,6 +28,8 @@ import timber.log.Timber
 
 class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextListener{
 
+    private var isFabOpen = false
+
     private val mTodoViewModel: ToDoViewModel by viewModels {
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
     }
@@ -61,6 +63,9 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         // Set Menu
         setupMenu()
 
+        // Set Expandable Floating Button :
+
+        setupExpandableFAB()
 
         // Set Recycler View
         val recyclerView = binding.recyclerView
@@ -96,6 +101,40 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
         return binding.root
     }
+
+    private fun setupExpandableFAB() {
+
+        binding.floatingActionButton.setOnClickListener {
+            if (!isFabOpen){
+                showFABMenu()
+            }else {
+                closeFABMenu()
+            }
+        }
+
+    }
+
+    private fun showFABMenu() {
+        isFabOpen = true
+        binding.fbAddPersonalNote.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        binding.fbAddIdeaNote.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+
+        binding.addPersonalNoteText.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        binding.addIdeaNoteText.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+
+        binding.addPersonalNoteText.visibility = View.VISIBLE
+        binding.addIdeaNoteText.visibility = View.VISIBLE
+    }
+
+    private fun closeFABMenu() {
+        isFabOpen = false
+        binding.fbAddPersonalNote.animate().translationY(0F)
+        binding.fbAddIdeaNote.animate().translationY(0F)
+        binding.addIdeaNoteText.visibility = View.GONE
+        binding.addPersonalNoteText.visibility = View.GONE
+    }
+
+
 
     private fun readFromSharedPref(): Int {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
