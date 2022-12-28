@@ -26,7 +26,7 @@ class BindingAdapters {
         fun navigateToIdeaFragment(view:FloatingActionButton,navigate:Boolean){
             view.setOnClickListener{
                 if (navigate){
-                    view.findNavController().navigate(R.id.action_listFragment_to_addFragment)
+                    view.findNavController().navigate(R.id.action_listFragment_to_ideaFragment)
                 }
             }
         }
