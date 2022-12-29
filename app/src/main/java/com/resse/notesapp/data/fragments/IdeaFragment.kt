@@ -1,15 +1,15 @@
 package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.resse.notesapp.R
 import com.resse.notesapp.data.viewModels.IdeaFragmentViewModel
 import com.resse.notesapp.databinding.FragmentIdeaBinding
-import com.resse.notesapp.databinding.FragmentListBinding
+import java.util.function.Predicate
 
 
 class IdeaFragment : Fragment() {
@@ -36,9 +36,35 @@ class IdeaFragment : Fragment() {
         binding.viewModel = viewModel
 
 
+        // Generate Button
+        binding.generateBtn.setOnClickListener {
+            var checkedList = getActivityType()
+            viewModel.getBoredActivity(checkedList)
+        }
 
         return binding.root
 
+    }
+
+    private fun getActivityType(): MutableList<String> {
+        var checkboxList = mutableListOf(
+            binding.educationCheckBox,
+            binding.socialCheckBox,
+            binding.diyCheckBox,
+            binding.recreationalCheckBox,
+            binding.cookingCheckBox,
+            binding.relaxationCheckBox
+        )
+        checkboxList.removeIf { x ->
+            Predicate { checkbox: CheckBox -> !checkbox.isChecked }.test(x)
+        }
+
+        var checkedList = mutableListOf<String>()
+
+        for (checkbox in checkboxList) {
+            checkedList.add(checkbox.text.toString().lowercase())
+        }
+        return checkedList
     }
 
     override fun onDestroyView() {
