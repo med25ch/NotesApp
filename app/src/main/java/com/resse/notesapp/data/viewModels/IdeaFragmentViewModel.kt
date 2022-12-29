@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.resse.notesapp.data.network.BoredActivity
 import com.resse.notesapp.data.network.BoredApi
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class IdeaFragmentViewModel : ViewModel(){
 
@@ -16,22 +17,28 @@ class IdeaFragmentViewModel : ViewModel(){
     // The external immutable LiveData for the request status
     val status: LiveData<BoredActivity> = _status
 
+    // List of Activity Types
+    val activityTypes = mutableListOf<String>("education","social","diy","recreational","cooking","relaxation")
+
+
     /**
      * Call getBoredActivity() on init so we can display status immediately.
      */
-    init {
-        getBoredActivity()
-    }
+//    init {
+//        getBoredActivity("social")
+//    }
 
     /**
      * Gets Bored activity information from the Bored API Retrofit service and updates the
      * [List] [LiveData].
      */
-    private fun getBoredActivity() {
+     fun getBoredActivity(checkedList: MutableList<String>) {
+
+        var type = getActivityType(checkedList)
 
         viewModelScope.launch {
             try {
-                val listResult = BoredApi.retrofitService.getActivity()
+                val listResult = BoredApi.retrofitService.getActivity(type)
                 _status.value = listResult
 
             }catch (e: Exception){
@@ -40,4 +47,13 @@ class IdeaFragmentViewModel : ViewModel(){
             }
         }
     }
+
+    private fun getActivityType(checkedList: MutableList<String>) =
+        if (checkedList.isNotEmpty()) {
+            val randomIndex = Random.nextInt(checkedList.size);
+            checkedList[randomIndex]
+        } else {
+            val randomIndex = Random.nextInt(activityTypes.size);
+            activityTypes[randomIndex]
+        }
 }

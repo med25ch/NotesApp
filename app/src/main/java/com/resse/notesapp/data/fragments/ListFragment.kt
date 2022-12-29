@@ -204,6 +204,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     override fun onDestroyView() {
         super.onDestroyView()
+        isFabOpen = false
         _binding = null
     }
 

@@ -5,6 +5,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 //URL
 private const val BASE_URL_BORED = "https://www.boredapi.com/api/"
@@ -24,7 +26,7 @@ private val retrofit = Retrofit.Builder()
 
 interface BoredApiService {
     @GET("activity")
-    suspend fun getActivity() : BoredActivity
+    suspend fun getActivity(@Query("type") type:String) : BoredActivity
 }
 
 

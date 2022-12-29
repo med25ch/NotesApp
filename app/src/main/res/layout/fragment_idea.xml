@@ -53,10 +53,12 @@
          android:layout_margin="8dp"
          android:orientation="vertical">
          <CheckBox
+             android:id="@+id/educationCheckBox"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:text="Education"/>
          <CheckBox
+             android:id="@+id/recreationalCheckBox"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:text="Recreational"/>
@@ -67,10 +69,12 @@
          android:layout_margin="8dp"
          android:orientation="vertical">
          <CheckBox
+             android:id="@+id/socialCheckBox"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:text="social"/>
+             android:text="Social"/>
          <CheckBox
+             android:id="@+id/cookingCheckBox"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:text="Cooking"/>
@@ -81,10 +85,12 @@
          android:layout_margin="8dp"
          android:orientation="vertical">
          <CheckBox
+             android:id="@+id/diyCheckBox"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:text="Diy"/>
          <CheckBox
+             android:id="@+id/relaxationCheckBox"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:text="Relaxation"/>
@@ -244,6 +250,7 @@
             android:layout_marginTop="32dp"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/generateBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
