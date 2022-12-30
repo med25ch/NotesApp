@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.resse.notesapp.data.network.BoredActivity
 import com.resse.notesapp.data.network.BoredApi
+import com.resse.notesapp.data.uistate.UiState
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-class IdeaFragmentViewModel : ViewModel(){
+class IdeaFragmentViewModel : BaseViewModel<UiState>(){
 
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<BoredActivity>()
@@ -18,7 +19,8 @@ class IdeaFragmentViewModel : ViewModel(){
     val status: LiveData<BoredActivity> = _status
 
     // List of Activity Types
-    val activityTypes = mutableListOf<String>("education","social","diy","recreational","cooking","relaxation")
+    val activityTypes = mutableListOf("education","social","diy","recreational","cooking","relaxation")
+
 
 
     /**
@@ -36,13 +38,17 @@ class IdeaFragmentViewModel : ViewModel(){
 
         var type = getActivityType(checkedList)
 
+        uiState.value = UiState.Loading
+
         viewModelScope.launch {
             try {
                 val listResult = BoredApi.retrofitService.getActivity(type)
+                uiState.value = UiState.Success
                 _status.value = listResult
 
             }catch (e: Exception){
                 val noData = BoredActivity("No Data From server - Reason : ${e.message} : ","No Data",0)
+                uiState.value = UiState.Success
                 _status.value = noData
             }
         }
