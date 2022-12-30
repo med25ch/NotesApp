@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.resse.notesapp.data.uistate.UiState
 import com.resse.notesapp.data.viewModels.IdeaFragmentViewModel
 import com.resse.notesapp.databinding.FragmentIdeaBinding
 import java.util.function.Predicate
@@ -35,6 +38,13 @@ class IdeaFragment : Fragment() {
         // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
 
+        //Observe UiState :
+
+        viewModel.uiState().observe(viewLifecycleOwner, Observer { uiState ->
+            if (uiState != null) {
+                render(uiState)
+            }
+        })
 
         // Generate Button
         binding.generateBtn.setOnClickListener {
@@ -46,14 +56,40 @@ class IdeaFragment : Fragment() {
 
     }
 
-    private fun getActivityType(): MutableList<String> {
+    private fun render(uiState: UiState) {
+        when (uiState) {
+            is UiState.Loading -> {
+                onLoad()
+            }
+            is UiState.Success -> {
+                onSuccess()
+            }
+            is UiState.Error -> {
+                onError()
+            }
+        }
+    }
+
+    private fun onLoad() = with(binding) {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun onSuccess()= with(binding) {
+        progressBar.visibility = View.INVISIBLE
+    }
+
+    private fun onError() = with(binding)  {
+        progressBar.visibility = View.INVISIBLE
+    }
+
+    private fun getActivityType(): MutableList<String> = with(binding)  {
         var checkboxList = mutableListOf(
-            binding.educationCheckBox,
-            binding.socialCheckBox,
-            binding.diyCheckBox,
-            binding.recreationalCheckBox,
-            binding.cookingCheckBox,
-            binding.relaxationCheckBox
+            educationCheckBox,
+            socialCheckBox,
+            diyCheckBox,
+            recreationalCheckBox,
+            cookingCheckBox,
+            relaxationCheckBox
         )
         checkboxList.removeIf { x ->
             Predicate { checkbox: CheckBox -> !checkbox.isChecked }.test(x)
