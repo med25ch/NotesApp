@@ -39,8 +39,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/note_title_ET"
                 android:layout_width="300dp"
-                android:maxLength="32"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content" />
 

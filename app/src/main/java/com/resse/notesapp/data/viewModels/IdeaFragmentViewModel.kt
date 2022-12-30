@@ -3,6 +3,8 @@ package com.resse.notesapp.data.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.resse.notesapp.data.models.Priority
+import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.network.BoredActivity
 import com.resse.notesapp.data.network.BoredApi
 import com.resse.notesapp.data.uistate.UiState
@@ -64,4 +66,14 @@ class IdeaFragmentViewModel : BaseViewModel<UiState>(){
             val randomIndex = Random.nextInt(activityTypes.size);
             activityTypes[randomIndex]
         }
+
+    fun boredActivityAsToDoData(toDoTitle: String): ToDoData {
+
+        return ToDoData(
+            id = 0,
+            title = toDoTitle,
+            priority = Priority.LOW,
+            description = "By todo ideas"
+        )
+    }
 }
