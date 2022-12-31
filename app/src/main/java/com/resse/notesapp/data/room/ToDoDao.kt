@@ -11,6 +11,9 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_table ORDER BY id DESC")
     fun getAllToDoData() : Flow<List<ToDoData>>
 
+    @Query("SELECT * FROM todo_table ORDER BY id ASC")
+    fun getOldToNewAllToDoData() : Flow<List<ToDoData>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(toDoData: ToDoData)
 
@@ -31,4 +34,6 @@ interface ToDoDao {
 
     @Query("SELECT * FROM todo_table ORDER BY CASE WHEN priority LIKE 'L%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END")
     fun sortLowToHigh() : LiveData<List<ToDoData>>
+
+
 }

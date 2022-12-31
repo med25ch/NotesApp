@@ -12,7 +12,12 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
 
         // Room executes all queries on a separate thread.
         // Observed Flow will notify the observer when the data has changed.
+
+        //Newest to Oldest data
         val allToDoData: Flow<List<ToDoData>> = toDoDao.getAllToDoData()
+
+        //Oldest to newest Data
+        val getOldToNewAllToDoData : Flow<List<ToDoData>> = toDoDao.getAllToDoData()
 
         // By default Room runs suspend queries off the main thread, therefore, we don't need to
         // implement anything else to ensure we're not doing long running database work
@@ -58,7 +63,4 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
         suspend fun sortLowToHigh() : LiveData<List<ToDoData>> {
                 return toDoDao.sortLowToHigh()
         }
-
-
-
 }
