@@ -39,8 +39,7 @@
                     android:id="@+id/current_note_title_ET"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:maxLength="32"
-                    android:maxLines="2" />
+                    android:maxLines="3" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

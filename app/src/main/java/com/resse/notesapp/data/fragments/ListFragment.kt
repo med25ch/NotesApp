@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -26,7 +27,7 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import timber.log.Timber
 
 
-class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextListener{
+class ListFragment : Fragment(), ItemClickListener, SearchView.OnQueryTextListener {
 
     private var isFabOpen = false
 
@@ -34,20 +35,20 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
     }
 
-    private val mSharedViewModel : SharedViewModel by viewModels{
+    private val mSharedViewModel: SharedViewModel by viewModels {
         SharedViewModelFactory(activity?.application)
     }
 
-    private val mSavedStateViewModel : SavedStateViewModel by viewModels()
+    private val mSavedStateViewModel: SavedStateViewModel by viewModels()
 
 
     private lateinit var viewModel: MyObservable
-    private lateinit var recyclerViewAdapter : ToDoListAdapter
-    private var searchCanProcess : Boolean = false
+    private lateinit var recyclerViewAdapter: ToDoListAdapter
+    private var searchCanProcess: Boolean = false
 
 
     // The type of binding class will change from fragment to fragment
-    private var _binding : FragmentListBinding? = null
+    private var _binding: FragmentListBinding? = null
 
     private val binding get() = _binding!! // Helper Property
 
@@ -56,7 +57,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         savedInstanceState: Bundle?
     ): View? {
         // Data binding
-        _binding = FragmentListBinding.inflate(inflater,container,false)
+        _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = mSharedViewModel
 
@@ -71,7 +72,8 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         val recyclerView = binding.recyclerView
         recyclerViewAdapter = ToDoListAdapter(this)
         recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
 
         //Animation for Recycler view
@@ -84,17 +86,21 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
         //Using SharedPreferences :
         val sharedPref = activity?.getSharedPreferences(
-            getString(R.string.list_fragment_key), Context.MODE_PRIVATE)
+            getString(R.string.list_fragment_key), Context.MODE_PRIVATE
+        )
 
         //Read From Shared pref :
         val restoredIndexFromSharedPref = readFromSharedPref()
 
-        if (restoredIndex != null){
+        if (restoredIndex != null) {
+            Timber.d("INDEX_KEY From mSavedStateViewModel  | ${mSavedStateViewModel.restoreSortingIndex()!!}")
             matchSelectedChoiceWithSort(mSavedStateViewModel.restoreSortingIndex()!!)
-        }else {
-            if (sharedPref != null){
+        } else {
+            if (sharedPref != null) {
+                Timber.d("INDEX_KEY From SharedPref  | $restoredIndexFromSharedPref")
                 matchSelectedChoiceWithSort(restoredIndexFromSharedPref)
-            }else{
+            } else {
+                Timber.d("Default INDEX_KEY| 4")
                 matchSelectedChoiceWithSort(4)
             }
         }
@@ -105,9 +111,9 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
     private fun setupExpandableFAB() {
 
         binding.floatingActionButton.setOnClickListener {
-            if (!isFabOpen){
+            if (!isFabOpen) {
                 showFABMenu()
-            }else {
+            } else {
                 closeFABMenu()
             }
         }
@@ -116,11 +122,14 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     private fun showFABMenu() {
         isFabOpen = true
-        binding.fbAddPersonalNote.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        binding.fbAddPersonalNote.animate()
+            .translationY(-resources.getDimension(R.dimen.standard_55))
         binding.fbAddIdeaNote.animate().translationY(-resources.getDimension(R.dimen.standard_105))
 
-        binding.addPersonalNoteText.animate().translationY(-resources.getDimension(R.dimen.standard_55))
-        binding.addIdeaNoteText.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+        binding.addPersonalNoteText.animate()
+            .translationY(-resources.getDimension(R.dimen.standard_55))
+        binding.addIdeaNoteText.animate()
+            .translationY(-resources.getDimension(R.dimen.standard_105))
 
         binding.addPersonalNoteText.visibility = View.VISIBLE
         binding.addIdeaNoteText.visibility = View.VISIBLE
@@ -135,7 +144,6 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
     }
 
 
-
     private fun readFromSharedPref(): Int {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val defaultValue = 0
@@ -143,9 +151,9 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
             ?: defaultValue
     }
 
-    private fun writeToSharedPref(index :Int){
+    private fun writeToSharedPref(index: Int) {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putInt(getString(R.string.list_fragment_key), index)
             apply()
         }
@@ -155,7 +163,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
         super.onViewCreated(view, savedInstanceState)
         viewModel = activity?.run {
             ViewModelProvider(this)[MyObservable::class.java]
-           //ViewModelProviders.of(this)[MyObservable::class.java]
+            //ViewModelProviders.of(this)[MyObservable::class.java]
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -180,11 +188,11 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                 return when (menuItem.itemId) {
                     R.id.menu_delete_all -> {
                         //delete all items
-                        mTodoViewModel.confirmItemRemoval(requireContext())
+                        confirmItemsRemoval(requireContext())
                         true
                     }
 
-                    R.id.menu_sort ->{
+                    R.id.menu_sort -> {
                         showRadioConfirmationDialog()
                         return true
                     }
@@ -210,7 +218,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         Timber.d("onQueryTextSubmit || Can Process Search : $searchCanProcess")
-        if(query != null && searchCanProcess){
+        if (query != null && searchCanProcess) {
             searchThroughDatabase(query)
         }
         return true
@@ -218,7 +226,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     override fun onQueryTextChange(newText: String?): Boolean {
         Timber.d("onQueryTextChange || Can Process Search : $searchCanProcess")
-        if(newText != null && searchCanProcess){
+        if (newText != null && searchCanProcess) {
             searchThroughDatabase(newText)
         }
         searchCanProcess = true
@@ -227,48 +235,54 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
     private fun searchThroughDatabase(query: String) {
         var searchQuery = query
-        searchQuery = "%$searchQuery%"
 
-        mTodoViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { toDos ->
-            // Update the cached copy of the words in the adapter.
-            toDos.let {
-                recyclerViewAdapter.submitList(it)
-                Timber.d("User searched for : ID : $searchQuery || Found : ${toDos.count()} notes")
+        if (searchQuery.isNotEmpty()) {
+            searchQuery = "%$searchQuery%"
+
+            mTodoViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { toDos ->
+                // Update the cached copy of the words in the adapter.
+                toDos.let {
+                    recyclerViewAdapter.submitList(it)
+                    Timber.d("User searched for : ID : $searchQuery || Found : ${toDos.count()} notes")
+                }
             }
+        } else {
+            val restoredIndexFromSharedPref = readFromSharedPref()
+            matchSelectedChoiceWithSort(restoredIndexFromSharedPref)
         }
     }
 
     fun showRadioConfirmationDialog() {
         var dialogChoices = mTodoViewModel.dialogChoices
-        var selectedChoice : String
+        var selectedChoice: String
         var selectedChoiceIndex = readFromSharedPref()
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Sort by")
-            .setSingleChoiceItems(dialogChoices, selectedChoiceIndex) { dialog_, which ->
-                mTodoViewModel.selectedChoiceIndex = which
+            .setSingleChoiceItems(dialogChoices, selectedChoiceIndex) { _, which ->
+                selectedChoiceIndex = which
                 selectedChoice = dialogChoices[which]
             }
             .setPositiveButton("Ok") { dialog, which ->
-                Toast.makeText(context, "index ${mTodoViewModel.selectedChoiceIndex}", Toast.LENGTH_SHORT)
-                    .show()
-                matchSelectedChoiceWithSort(mTodoViewModel.selectedChoiceIndex)
+
+                matchSelectedChoiceWithSort(selectedChoiceIndex)
 
                 //Save index to SavedStateHandle
-                mSavedStateViewModel.saveSortingIndex(mTodoViewModel.selectedChoiceIndex)
+                mSavedStateViewModel.saveSortingIndex(selectedChoiceIndex)
 
                 //Write to shared Pref
-                writeToSharedPref(mTodoViewModel.selectedChoiceIndex)
+                writeToSharedPref(selectedChoiceIndex)
 
+                Timber.d("User Clicked on OK button | User Choice : ${dialogChoices[selectedChoiceIndex]}  | Index : $selectedChoiceIndex")
             }
-            .setNegativeButton("Cancel") { dialog, which ->
+            .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
     }
 
     private fun matchSelectedChoiceWithSort(selectedChoiceIndex: Int) {
-        when(selectedChoiceIndex){
+        when (selectedChoiceIndex) {
             0 -> {
                 // Add an observer on the LiveData returned by allToDoData.
                 // The onChanged() method fires when the observed data changes and the activity is
@@ -287,7 +301,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                 // Add an observer on the LiveData returned by allToDoData.
                 // The onChanged() method fires when the observed data changes and the activity is
                 // in the foreground.
-                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
+                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner) { toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
@@ -298,7 +312,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                 Timber.d("Sorting notes : High to Low Priority")
             }
             2 -> {
-                mTodoViewModel.sortLowToHigh().observe(viewLifecycleOwner){ toDos ->
+                mTodoViewModel.sortLowToHigh().observe(viewLifecycleOwner) { toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
@@ -309,7 +323,7 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                 Timber.d("Sorting notes : Low to High Priority")
             }
             3 -> {
-                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
+                mTodoViewModel.getOldToNewAllToDoData.observe(viewLifecycleOwner) { toDos ->
                     // Update the cached copy of the words in the adapter.
                     toDos.let {
                         recyclerViewAdapter.submitList(it)
@@ -319,14 +333,6 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
 
                 Timber.d("Sorting notes : Oldest to Newest")
             }
-            4 -> {
-                mTodoViewModel.sortHighToLow().observe(viewLifecycleOwner){ toDos ->
-                    // Update the cached copy of the words in the adapter.
-                    toDos.let {
-                        recyclerViewAdapter.submitList(it)
-                        mSharedViewModel.isDatabaseEmpty(toDos)
-                    }
-                }}
             else -> {
                 mTodoViewModel.allToDoData.observe(viewLifecycleOwner) { toDos ->
                     // Update the cached copy of the notes in the adapter.
@@ -337,5 +343,28 @@ class ListFragment : Fragment() , ItemClickListener , SearchView.OnQueryTextList
                 }
             }
         }
+    }
+
+    private fun confirmItemsRemoval(context: Context) {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setPositiveButton(context.getString(R.string.POSITIVE_BUTTON_TEXT)) { _, _ ->
+            //Remove all notes
+            mTodoViewModel.deleteAllData()
+            Toast.makeText(
+                context,
+                context.getString(R.string.SUCCESS_REMOVE_ITEM),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            Timber.d("Remove all items : Operation succeeded ")
+
+        }
+        builder.setNegativeButton(context.getString(R.string.NEGATIVE_BUTTON_TEXT)) { _, _ ->
+            Timber.d("Remove all items : Operation Canceled by user")
+        }
+        builder.setTitle(context.getString(R.string.REMOVE_ITEMS_DIALOG))
+        builder.setMessage(context.getString(R.string.REMOVE_CONFIRMATION_MESSAGE))
+        builder.create().show()
     }
 }

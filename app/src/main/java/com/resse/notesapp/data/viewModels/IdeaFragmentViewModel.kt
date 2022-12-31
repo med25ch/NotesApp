@@ -2,12 +2,14 @@ package com.resse.notesapp.data.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.resse.notesapp.data.models.Priority
+import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.network.BoredActivity
 import com.resse.notesapp.data.network.BoredApi
 import com.resse.notesapp.data.uistate.UiState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.random.Random
 
 class IdeaFragmentViewModel : BaseViewModel<UiState>(){
@@ -42,14 +44,16 @@ class IdeaFragmentViewModel : BaseViewModel<UiState>(){
 
         viewModelScope.launch {
             try {
-                val listResult = BoredApi.retrofitService.getActivity(type)
+                val boredActivity = BoredApi.retrofitService.getActivity(type)
                 uiState.value = UiState.Success
-                _status.value = listResult
+                _status.value = boredActivity
+                Timber.d("BoredActivity from server . ${boredActivity.activity} | type : ${boredActivity.type}")
 
             }catch (e: Exception){
-                val noData = BoredActivity("No Data From server - Reason : ${e.message} : ","No Data",0)
-                uiState.value = UiState.Success
-                _status.value = noData
+                val noData = "Could not connect to server. Please verify Internet connectivity"
+                uiState.value = UiState.Error(noData)
+                Timber.d(noData)
+
             }
         }
     }
@@ -62,4 +66,14 @@ class IdeaFragmentViewModel : BaseViewModel<UiState>(){
             val randomIndex = Random.nextInt(activityTypes.size);
             activityTypes[randomIndex]
         }
+
+    fun boredActivityAsToDoData(toDoTitle: String): ToDoData {
+
+        return ToDoData(
+            id = 0,
+            title = toDoTitle,
+            priority = Priority.LOW,
+            description = "By todo ideas"
+        )
+    }
 }

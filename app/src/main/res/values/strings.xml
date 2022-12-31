@@ -20,5 +20,6 @@
     <string name="MY_LIST_ITEM_TITLE">My list</string>
     <string name="IDEAS_ITEM">Ideas</string>
     <string name="SETTING_ITEM">Settings</string>
+    <string name="warning_todo">Note: All todo ideas are generated with low priority (green).You can modify priority from Edit Menu</string>
 
 </resources>

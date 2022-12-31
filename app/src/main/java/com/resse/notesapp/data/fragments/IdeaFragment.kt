@@ -1,6 +1,5 @@
 package com.resse.notesapp.data.fragments
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,14 @@ import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
+import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.uistate.UiState
 import com.resse.notesapp.data.viewModels.IdeaFragmentViewModel
+import com.resse.notesapp.data.viewModels.ToDoViewModel
+import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
 import com.resse.notesapp.databinding.FragmentIdeaBinding
+import timber.log.Timber
 import java.util.function.Predicate
 
 
@@ -19,6 +23,9 @@ class IdeaFragment : Fragment() {
 
     private val viewModel: IdeaFragmentViewModel by viewModels()
 
+    private val mTodoViewModel: ToDoViewModel by viewModels {
+        ToDoViewModelFactory((activity?.application as ToDoApplication).repository)
+    }
 
     // The type of binding class will change from fragment to fragment
     private var _binding : FragmentIdeaBinding? = null
@@ -52,6 +59,17 @@ class IdeaFragment : Fragment() {
             viewModel.getBoredActivity(checkedList)
         }
 
+        // Add note Button :
+        binding.addToDoBtn.setOnClickListener {
+            var toDoTitle = binding.titleTxt.text.toString()
+            var toDoData = viewModel.boredActivityAsToDoData(toDoTitle)
+            mTodoViewModel.insert(toDoData)
+            Timber.d("Bored Activity inserted to Database ")
+            Snackbar.make(requireView(), "Added to your Todo list", Snackbar.LENGTH_SHORT)
+                .show()
+
+        }
+
         return binding.root
 
     }
@@ -65,7 +83,7 @@ class IdeaFragment : Fragment() {
                 onSuccess()
             }
             is UiState.Error -> {
-                onError()
+                onError(uiState)
             }
         }
     }
@@ -76,10 +94,14 @@ class IdeaFragment : Fragment() {
 
     private fun onSuccess()= with(binding) {
         progressBar.visibility = View.INVISIBLE
+        addToDoBtn.isEnabled = true
     }
 
-    private fun onError() = with(binding)  {
+    private fun onError(uiState: UiState.Error) = with(binding)  {
         progressBar.visibility = View.INVISIBLE
+        addToDoBtn.isEnabled = false
+        Snackbar.make(requireView(), uiState.text, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private fun getActivityType(): MutableList<String> = with(binding)  {
@@ -100,6 +122,9 @@ class IdeaFragment : Fragment() {
         for (checkbox in checkboxList) {
             checkedList.add(checkbox.text.toString().lowercase())
         }
+
+        Timber.d("User choice count : ${checkboxList.count()}")
+
         return checkedList
     }
 

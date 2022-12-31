@@ -27,7 +27,7 @@ class MyObservable : ViewModel() {
         }
     }
 
-    fun parsePriority(priority: String) : Priority {
+    private fun parsePriority(priority: String) : Priority {
         return when(priority){
             "LOW" -> {
                 Priority.LOW}
