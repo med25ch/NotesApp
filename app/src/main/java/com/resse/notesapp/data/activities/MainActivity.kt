@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         //WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         //WindowCompat.setDecorFitsSystemWindows(window, false)
 

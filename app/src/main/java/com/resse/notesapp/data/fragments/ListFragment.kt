@@ -4,10 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -76,7 +76,6 @@ class ListFragment : Fragment(), ItemClickListener, SearchView.OnQueryTextListen
         recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-
         //Animation for Recycler view
         recyclerView.itemAnimator = SlideInUpAnimator().apply {
             addDuration = 200
@@ -110,7 +109,6 @@ class ListFragment : Fragment(), ItemClickListener, SearchView.OnQueryTextListen
     }
 
     private fun setupExpandableFAB() {
-
         binding.floatingActionButton.setOnClickListener {
             if (!isFabOpen) {
                 showFABMenu()
