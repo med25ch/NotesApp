@@ -1,5 +1,6 @@
 package com.resse.notesapp.data.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +68,7 @@ class IdeaFragment : Fragment() {
             Timber.d("Bored Activity inserted to Database ")
             Snackbar.make(requireView(), "Added to your Todo list", Snackbar.LENGTH_SHORT)
                 .show()
-
+            binding.addToDoBtn.isEnabled = false
         }
 
         return binding.root

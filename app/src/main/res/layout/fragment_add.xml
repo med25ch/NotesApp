@@ -30,9 +30,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="64dp"
             android:layout_marginEnd="32dp"
-            app:placeholderTextColor="@color/black"
             android:hint="Note title"
-            app:hintTextColor="@color/black"
             android:fontFamily="sans-serif-condensed">
 
             <!--this is the actual edit text which takes the input-->
@@ -40,7 +38,6 @@
                 android:id="@+id/note_title_ET"
                 android:layout_width="300dp"
                 android:maxLines="3"
-                android:textColor="@color/black"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +121,6 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:hint="Note Description"
-                app:hintTextColor="@color/black"
                 android:fontFamily="sans-serif-condensed">
 
                 <!--this is the actual edit text which takes the input-->
@@ -132,7 +128,6 @@
                     android:id="@+id/note_description_ET"
                     android:layout_width="300dp"
                     android:layout_height="250dp"
-                    android:textColor="@color/black"
                     android:gravity="top" />
 
             </com.google.android.material.textfield.TextInputLayout>

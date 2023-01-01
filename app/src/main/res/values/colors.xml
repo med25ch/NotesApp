@@ -13,7 +13,8 @@
     <color name="green_selected">#6be2cb</color>
     <color name="lightGrey">#D3D3D3</color>
     <color name="darkGrey">#5A5A5A</color>
-    <color name="appBackground">#99d5fe</color>
+    <color name="appBackground">#292929</color>
+    <color name="appBackgroundLight">#99d5fe</color>
     <color name="fabBackground">#99d5fe</color>
     <color name="secondDarkGrey">#7d8386</color>
 
