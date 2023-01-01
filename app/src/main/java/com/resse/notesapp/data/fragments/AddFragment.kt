@@ -6,9 +6,9 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -16,9 +16,9 @@ import com.resse.notesapp.R
 import com.resse.notesapp.data.dependencies.ToDoApplication
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.viewModels.SharedViewModel
+import com.resse.notesapp.data.viewModels.SharedViewModelFactory
 import com.resse.notesapp.data.viewModels.ToDoViewModel
 import com.resse.notesapp.data.viewModels.ToDoViewModelFactory
-import com.resse.notesapp.data.viewModels.SharedViewModelFactory
 import timber.log.Timber
 
 

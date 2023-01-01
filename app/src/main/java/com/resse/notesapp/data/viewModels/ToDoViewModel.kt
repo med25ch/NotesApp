@@ -1,19 +1,10 @@
 package com.resse.notesapp.data.viewModels
 
-import android.app.AlertDialog
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.*
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.resse.notesapp.R
-import com.resse.notesapp.data.adapters.ToDoListAdapter
-import com.resse.notesapp.data.fragments.UpdateFragment
 import com.resse.notesapp.data.models.ToDoData
 import com.resse.notesapp.data.repository.ToDoRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class ToDoViewModel (private val repository: ToDoRepository) : ViewModel(){
 

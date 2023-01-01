@@ -6,7 +6,6 @@ import android.content.Context
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.lifecycle.*
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import com.resse.notesapp.R
 import com.resse.notesapp.data.fragments.UpdateFragment

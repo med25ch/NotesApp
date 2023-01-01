@@ -2,25 +2,16 @@ package com.resse.notesapp.data.adapters
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
-import androidx.databinding.BindingAdapter
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.resse.notesapp.R
-import com.resse.notesapp.data.fragments.ListFragment
 import com.resse.notesapp.data.interfaces.ItemClickListener
 import com.resse.notesapp.data.models.Priority
 import com.resse.notesapp.data.models.ToDoData
-import com.resse.notesapp.data.viewModels.SharedViewModel
-import com.resse.notesapp.data.viewModels.SharedViewModelFactory
 import com.resse.notesapp.databinding.RowLayoutBinding
 
 class ToDoListAdapter(private val itemClickListener: ItemClickListener) : ListAdapter<ToDoData, ToDoListAdapter.ToDoViewHolder>(ToDosComparator()){

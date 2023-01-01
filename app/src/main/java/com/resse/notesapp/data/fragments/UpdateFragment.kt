@@ -2,12 +2,9 @@ package com.resse.notesapp.data.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle

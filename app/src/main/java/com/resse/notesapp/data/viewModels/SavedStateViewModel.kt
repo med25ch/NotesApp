@@ -1,9 +1,7 @@
 package com.resse.notesapp.data.viewModels
 
-import android.app.Application
-import android.os.Bundle
-import androidx.lifecycle.*
-import androidx.savedstate.SavedStateRegistryOwner
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 
 class SavedStateViewModel (private val state : SavedStateHandle) : ViewModel(){
 
