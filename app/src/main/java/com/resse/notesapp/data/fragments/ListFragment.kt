@@ -61,6 +61,7 @@ class ListFragment : Fragment(), ItemClickListener, SearchView.OnQueryTextListen
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mSharedViewModel = mSharedViewModel
 
+
         // Set Menu
         setupMenu()
 
@@ -213,6 +214,7 @@ class ListFragment : Fragment(), ItemClickListener, SearchView.OnQueryTextListen
     override fun onDestroyView() {
         super.onDestroyView()
         isFabOpen = false
+        searchCanProcess = false
         _binding = null
     }
 

@@ -2,8 +2,8 @@ package com.resse.notesapp.data.repository
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.resse.notesapp.data.room.ToDoDao
 import com.resse.notesapp.data.models.ToDoData
+import com.resse.notesapp.data.room.ToDoDao
 import kotlinx.coroutines.flow.Flow
 
 // Declares the DAO as a private property in the constructor. Pass in the DAO

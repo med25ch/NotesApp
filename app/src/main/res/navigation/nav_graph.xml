@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/addFragment"
         android:name="com.resse.notesapp.data.fragments.AddFragment"
-        android:label="Add note"
+        android:label="Add custom note"
         tools:layout="@layout/fragment_add" >
         <action
             android:id="@+id/action_addFragment_to_listFragment"
@@ -57,7 +57,6 @@
     <fragment
         android:id="@+id/ideaFragment"
         android:name="com.resse.notesapp.data.fragments.IdeaFragment"
-        android:label="fragment_idea"
         tools:layout="@layout/fragment_idea" >
         <action
             android:id="@+id/action_ideaFragment_to_listFragment"

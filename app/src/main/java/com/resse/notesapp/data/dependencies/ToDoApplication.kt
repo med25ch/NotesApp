@@ -2,8 +2,8 @@ package com.resse.notesapp.data.dependencies
 
 import android.app.Application
 import com.resse.notesapp.BuildConfig
-import com.resse.notesapp.data.room.ToDoDataBase
 import com.resse.notesapp.data.repository.ToDoRepository
+import com.resse.notesapp.data.room.ToDoDataBase
 import timber.log.Timber
 
 
