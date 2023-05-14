@@ -1,6 +1,6 @@
 #  <h1 align="center">📝 NotesApp </h1>
 # 
-<p align="center">  NotesApp is a simple Android app for managing notes and to-do lists. With NotesApp , you can quickly add, delete, and update notes, as well as generating Todo Ideas from BoredApi.</>
+<p align="center">  NotesApp is a simple Android app for managing notes and to-do lists. With NotesApp , you can quickly add, delete, and update notes, as well as generate Todo Ideas from BoredApi.</>
   
 #  <h1 align="center">🖼 Preview</h1>
 
@@ -37,6 +37,7 @@ This app follows the MVVM (Model-View-ViewModel) architecture pattern.
 - Data binding
 - RecyclerView
 - Jetpack Datastore
+- Retrofit
 - LiveData
 - Coroutines
 - Repository
