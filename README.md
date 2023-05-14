@@ -15,7 +15,7 @@
   </tr>
  </table>
 
-
+![](https://github.com/med25ch/NotesApp/blob/main/ScreenShots/ToDoIdeas_VID.gif?raw=true)
 
 <h2 align="center">Features⭐</h2>
 
